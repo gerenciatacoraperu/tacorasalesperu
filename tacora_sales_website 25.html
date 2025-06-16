@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tacora Sales - Productos de Calidad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            background: #f5f5f5;
+            padding: 8px 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .header-top .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .logo .t { color: #1e5aa8; }
+        .logo .a1 { color: #d4af37; }
+        .logo .c { color: #dc143c; }
+        .logo .o { color: #1e5aa8; }
+        .logo .r { color: #d4af37; }
+        .logo .a2 { color: #7cb342; }
+
+        .sales-badge {
+            background: linear-gradient(45deg, #ff9500, #ffb347);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 30px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #ff9500;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff9500;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .user-actions a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            background: #1e5aa8;
+            padding: 0;
+        }
+
+        .nav-menu ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            padding: 20px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #1e5aa8;
+            text-decoration: none;
+        }
+
+        .product-showcase {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .product-images {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            border-color: #ff9500;
+        }
+
+        .product-info {
+            padding-left: 20px;
+        }
+
+        .product-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .stars {
+            color: #ff9500;
+            font-size: 18px;
+        }
+
+        .rating-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .price-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .current-price {
+            font-size: 2.8rem;
+            font-weight: bold;
+            color: #dc143c;
+            margin-bottom: 8px;
+        }
+
+        .original-price {
+            font-size: 1.4rem;
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 15px;
+        }
+
+        .discount-badge {
+            background: #dc143c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .product-features {
+            margin-bottom: 25px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff9500, #ffb347);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 149, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #ff9500;
+            border: 2px solid #ff9500;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #ff9500;
+            color: white;
+        }
+
+        .product-tabs {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-btn {
+            padding: 20px 30px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #ff9500;
+            border-bottom-color: #ff9500;
+        }
+
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .video-container {
+            margin: 20px 0;
+        }
+
+        .product-video {
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            border-radius: 8px;
+        }
+
+        .related-products {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #ff9500;
+            padding-bottom: 10px;
+        }
+
+        .product-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #ff9500;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #dc143c;
+            margin-bottom: 15px;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #ff9500;
+            outline: none;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 12px 15px;
+            border: 2px dashed #ddd;
+            border-radius: 6px;
+            text-align: center;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover .file-upload-label {
+            border-color: #ff9500;
+            color: #ff9500;
+        }
+
+        .footer {
+            background: #1e1e1e;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: #ff9500;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ff9500;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: #ff9500;
+            color: white;
+            text-align: center;
+            line-height: 45px;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 149, 0, 0.3);
+        }
+
+        .floating-admin {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ff9500;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 149, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .floating-admin:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .sales-badge {
+                font-size: 1.1rem;
+                padding: 6px 15px;
+            }
+
+            .search-bar {
+                margin: 15px 0;
+                order: 3;
+                flex-basis: 100%;
+            }
+
+            .header-top {
+                display: none;
+            }
+
+            .nav-menu ul {
+                flex-wrap: wrap;
+            }
+
+            .nav-menu a {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+
+            .product-info {
+                padding-left: 0;
+                padding-top: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div>🚚 Envío gratis en pedidos mayores a $50</div>
+                <div>📞 Atención al cliente: +1 (555) 123-4567</div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="t">t</span><span class="a1">a</span><span class="c">c</span><span class="o">o</span><span class="r">r</span><span class="a2">a</span>
+                </div>
+                <div class="sales-badge">sales</div>
+                
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Buscar productos...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="#favoritos">❤️ Favoritos</a>
+                    <a href="#cuenta">👤 Mi Cuenta</a>
+                    <a href="#carrito">🛒 Carrito (0)</a>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="nav-menu">
+            <div class="container">
+                <ul>
+                    <li><a href="#inicio">🏠 Inicio</a></li>
+                    <li><a href="#productos">📦 Productos</a></li>
+                    <li><a href="#categorias">📂 Categorías</a></li>
+                    <li><a href="#ofertas">🔥 Ofertas</a></li>
+                    <li><a href="#contacto">📞 Contacto</a></li>
+                    <li><a href="#sobre-nosotros">ℹ️ Sobre Nosotros</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#inicio">Inicio</a> > <a href="#productos">Productos</a> > <strong>Globos de Fiesta Premium</strong>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="container">
+        <div id="adminPanel" class="admin-panel">
+            <h2 class="section-title">🛠️ Panel de Administración</h2>
+            <form id="productForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="productName">Nombre del Producto</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">Precio Actual</label>
+                        <input type="text" id="productPrice" placeholder="$0.00" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="originalPrice">Precio Original</label>
+                        <input type="text" id="originalPrice" placeholder="$0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productCategory">Categoría</label>
+                        <select id="productCategory">
+                            <option value="decoracion">Decoración</option>
+                            <option value="fiesta">Fiesta</option>
+                            <option value="globos">Globos</option>
+                            <option value="hogar">Hogar</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Descripción del Producto</label>
+                    <textarea id="productDescription" placeholder="Describe las características principales del producto..."></textarea>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Imagen Principal</label>
+                        <div class="file-upload">
+                            <input type="file" id="mainImage" accept="image/*">
+                            <label for="mainImage" class="file-upload-label">
+                                📷 Subir imagen principal
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Video del Producto</label>
+                        <div class="file-upload">
+                            <input type="file" id="productVideo" accept="video/*">
+                            <label for="productVideo" class="file-upload-label">
+                                🎥 Subir video
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Imágenes Adicionales (Galería)</label>
+                    <div class="file-upload">
+                        <input type="file" id="galleryImages" accept="image/*" multiple>
+                        <label for="galleryImages" class="file-upload-label">
+                            🖼️ Subir múltiples imágenes
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button type="submit" class="btn-primary">💾 Guardar Producto</button>
+                    <button type="button" class="btn-secondary" onclick="toggleAdmin()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Showcase -->
+    <div class="container">
+        <div class="product-showcase">
+            <div class="product-grid">
+                <div class="product-images">
+                    <img id="mainProductImage" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop" alt="Producto Principal" class="main-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjE1MCIgcj0iNDAiIGZpbGw9IiNEREREREQiLz4KPHBhdGggZD0iTTE2MCAyNDBIMjQwVjI4MEgxNjBWMjQwWiIgZmlsbD0iI0RERERERCIvPgo8L3N2Zz4='">
+                    
+                    <div class="thumbnail-gallery" id="thumbnailGallery">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=80&h=80&fit=crop" alt="Vista 1" class="thumbnail active" onclick="changeMainImage(this.src)">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=80&h=80&fit=crop" alt="Vista 2" class="thumbnail" onclick="changeMainImage(this.src)">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=80&h=80&fit=crop" alt="Vista 3" class="thumbnail" onclick="changeMainImage(this.src)">
+                        <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=80&h=80&fit=crop" alt="Vista 4" class="thumbnail" onclick="changeMainImage(this.src)">
+                    </div>
+                </div>
+                
+                <div class="product-info">
+                    <h1 id="mainProductTitle" class="product-title">Globos de Fiesta Premium - Pack de 100 unidades</h1>
+                    
+                    <div class="product-rating">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <span class="rating-text">4.8/5 (1,247 reseñas) | 2,856 vendidos</span>
+                    </div>
+                    
+                    <div class="price-section">
+                        <div class="current-price" id="mainProductPrice">$25.99</div>
+                        <span class="original-price" id="mainOriginalPrice">$45.99</span>
+                        <span class="discount-badge">-43%</span>
+                    </div>
+                    
+                    <div class="product-features">
+                        <ul class="feature-list">
+                            <li><strong>Material:</strong> <span>Látex premium resistente</span></li>
+                            <li><strong>Colores:</strong> <span>12 colores variados</span></li>
+                            <li><strong>Tamaño:</strong> <span>10 pulgadas cuando se inflan</span></li>
+                            <li><strong>Cantidad:</strong> <span>100 unidades por pack</span></li>
+                            <li><strong>Duración:</strong> <span>Hasta 8-12 horas inflados</span></li>
+                            <li><strong>Certificación:</strong> <span>No tóxico, seguro para niños</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary">🛒 Agregar al carrito</button>
+                        <button class="btn-secondary">💝 Comprar ahora</button>
+                        <button class="btn-secondary">❤️ Favoritos</button>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <div style="display: flex; gap: 20px; font-size: 14px;">
+                            <div>🚚 <strong>Envío gratis</strong> en 2-3 días</div>
+                            <div>🔄 <strong>Devolución gratuita</strong> 30 días</div>
+                            <div>🛡️ <strong>Garantía</strong> de calidad</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Tabs -->
+        <div class="product-tabs">
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="showTab('description')">📋 Descripción</button>
+                <button class="tab-btn" onclick="showTab('specifications')">🔧 Especificaciones</button>
+                <button class="tab-btn" onclick="showTab('reviews')">⭐ Reseñas</button>
+                <button class="tab-btn" onclick="showTab('video')">🎥 Video</button>
+            </div>
+            
+            <div id="description" class="tab-content active">
+                <h3>Descripción del Producto</h3>
+                <div id="mainProductDescription">
+                    <p>Nuestros globos de fiesta premium son la elección perfecta para cualquier celebración especial. Fabricados con látex de alta calidad, estos globos ofrecen una durabilidad excepcional y colores vibrantes que harán que tu evento sea memorable.</p>
+                    
+                    <h4>Características destacadas:</h4>
+                    <ul>
+                        <li>✨ <strong>Colores brillantes y duraderos</strong> - No se desvanecen fácilmente</li>
+                        <li>💪 <strong>Material resistente</strong> - Látex premium que no se rompe fácilmente</li>
+                        <li>🎈 <strong>Fácil de inflar</strong> - Compatible con helio y aire</li>
+                        <li>🌈 <strong>Variedad de colores</strong> - 12 colores diferentes en cada pack</li>
+                        <li>👶 <strong>Seguro para niños</strong> - Materiales no tóxicos certificados</li>
+                    </ul>
+                    
+                    <p>Perfecto para cumpleaños, bodas, graduaciones, baby showers y cualquier ocasión especial. Cada pack incluye 100 globos de calidad premium que harán que tu celebración sea inolvidable.</p>
+                </div>
+            </div>
+            
+            <div id="specifications" class="tab-content">
+                <h3>Especificaciones Técnicas</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border
